@@ -1,7 +1,7 @@
+import os
 import sys
 from pyspark.sql import SparkSession
 from delta import configure_spark_with_delta_pip
-from delta.tables import DeltaTable
 
 INPUT_PATH = "data/input/orders.csv"
 INPUT_PATH_REDELIVERY = "data/input/orders_redelivery.csv"
@@ -32,17 +32,16 @@ def main():
     print(f"Read {incoming.count()} incoming records")
 
     # MERGE into the Delta table (or create it on first run)
-    if DeltaTable.isDeltaTable(spark, OUTPUT_PATH):
-        delta_table = DeltaTable.forPath(spark, OUTPUT_PATH)
+    if os.path.exists(OUTPUT_PATH):
+        incoming.createOrReplaceTempView("source")
 
-        delta_table.alias("target") \
-            .merge(
-                incoming.alias("source"),
-                "target.order_id = source.order_id"
-            ) \
-            .whenMatchedUpdateAll() \
-            .whenNotMatchedInsertAll() \
-            .execute()
+        spark.sql(f"""
+            MERGE INTO delta.`{OUTPUT_PATH}` AS target
+            USING source
+            ON target.order_id = source.order_id
+            WHEN MATCHED THEN UPDATE SET *
+            WHEN NOT MATCHED THEN INSERT *
+        """)
 
         print("MERGE complete")
     else:

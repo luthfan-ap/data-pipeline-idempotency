@@ -1,6 +1,6 @@
-# Idempotency in Data Pipelines
+# The "Rerun" Problem: Idempotency in Data Pipelines
 
-Code examples for the Medium article: **[Idempotency in Data Pipelines](#)**
+This repo is made for an example of the Medium article I wrote here: **[The "Rerun" Problem: Idempotency in Data Pipelines](https://medium.com/@luthfan-ap/the-rerun-problem-idempotency-in-data-pipelines-32b061ee0ff4?postPublishedType=repub)**
 
 This repo demonstrates **why idempotency matters** in data pipelines with three PySpark examples:
 
