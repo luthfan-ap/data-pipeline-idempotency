@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+.venv/
+
+# Spark / Delta artifacts
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Output data (generated at runtime)
+output/
+data/input/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
